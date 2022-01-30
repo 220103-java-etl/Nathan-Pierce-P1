@@ -18,7 +18,7 @@ import dev.pierce.models.User;
 import dev.pierce.repository.ReimbursementDAO;
 
 public class ReimbursementServiceTest {
-    private static ReimbursmentService reimbursementService;
+    private static ReimbursementService reimbursementService;
     private static ReimbursementDAO reimbursementDAO;
 
     private Reimbursement REIMBURSEMENT_TO_PROCESS;
@@ -30,7 +30,7 @@ public class ReimbursementServiceTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        reimbursementService = new ReimbursmentService();
+        reimbursementService = new ReimbursementService();
         reimbursementDAO = mock(ReimbursementDAO.class);
     }
 

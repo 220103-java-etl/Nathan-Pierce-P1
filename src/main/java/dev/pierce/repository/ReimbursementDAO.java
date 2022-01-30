@@ -1,16 +1,20 @@
 package dev.pierce.repository;
 
 import dev.pierce.models.Reimbursement;
+import dev.pierce.models.Status;
 import dev.pierce.util.ConnectionUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReimbursementDAO implements GenericDAO<Reimbursement>{
 
     ConnectionUtil connection = ConnectionUtil.getConnectionUtil();
+    UserDAO userDAO = new UserDAO();
 
     @Override
     public Reimbursement getByUsername(String username) {
@@ -66,7 +70,7 @@ public class ReimbursementDAO implements GenericDAO<Reimbursement>{
         return false;
     }
 
-    public void processRequest(int requestId, int id, String denyReason, String status){
+    public void processRequest(int requestId, int id, String processReason, String status){
 
         //insert into Processed_Requests
         String insertSql="insert into Processed_Requests (request_id, processing_manager, processing_reason) values ( ?, ?, ? )";
@@ -74,7 +78,7 @@ public class ReimbursementDAO implements GenericDAO<Reimbursement>{
             PreparedStatement pstmt = conn.prepareStatement(insertSql);
             pstmt.setInt(1, requestId);
             pstmt.setInt(2, id);
-            pstmt.setString(3, denyReason);
+            pstmt.setString(3, processReason);
             pstmt.execute();
         }
         catch(SQLException e){
@@ -94,4 +98,31 @@ public class ReimbursementDAO implements GenericDAO<Reimbursement>{
         }
     }
 
+    public List<Reimbursement> getByStatus(Status status){
+
+        String sql = "select * from Reimbursment_Requests where status = ?";
+        String stringStatus = String.valueOf(status);
+        List<Reimbursement> statusList = new ArrayList<>();
+
+        try(Connection conn = connection.getConnection()){
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, stringStatus);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                Reimbursement reimbursement = new Reimbursement(rs.getInt("request_id"),
+                        Status.valueOf(rs.getString("status")),
+                        userDAO.getById(rs.getInt("user_id")),
+                        userDAO.getByUsername(rs.getString("manager_username")),
+                        rs.getDouble("amount"),
+                        rs.getString("reason"),
+                        rs.getString("processing_reason"));
+                statusList.add(reimbursement);
+            }
+            return statusList;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

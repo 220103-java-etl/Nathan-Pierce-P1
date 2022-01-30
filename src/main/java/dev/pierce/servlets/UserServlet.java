@@ -1,4 +1,6 @@
 package dev.pierce.servlets;
 
-public class UserServlet {
+import javax.servlet.http.HttpServlet;
+
+public class UserServlet extends HttpServlet {
 }
