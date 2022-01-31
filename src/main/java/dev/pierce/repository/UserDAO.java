@@ -23,13 +23,11 @@ public class UserDAO implements GenericDAO <User>{
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()){
-                Role role;
                 User user = new User(rs.getInt("id"),
-                        rs.getString("first_name"),
-                        rs.getString("last_name"),
+                        rs.getString("users_full_name"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        role = Role.valueOf(rs.getString("role")));
+                        Role.valueOf(rs.getString("role")));
                 return user;
             }
         } catch (SQLException e) {
@@ -49,13 +47,11 @@ public class UserDAO implements GenericDAO <User>{
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()){
-                Role role;
                 User user = new User(rs.getInt("id"),
-                        rs.getString("first_name"),
-                        rs.getString("last_name"),
+                        rs.getString("users_full_name"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        role = Role.valueOf(rs.getString("role")));
+                        Role.valueOf(rs.getString("role")));
                 return user;
             }
         } catch (SQLException e) {
