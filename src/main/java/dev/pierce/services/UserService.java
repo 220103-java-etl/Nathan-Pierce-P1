@@ -24,9 +24,7 @@ public class UserService {
         return false;
     }
 
-    public String getNameByUsername(String username){
-        User user = userDAO.getByUsername(username);
-        String name = user.getFullName();
-        return name;
+    public User getByLogin(User u){
+        return userDAO.getByUsername(u.getUsername());
     }
 }

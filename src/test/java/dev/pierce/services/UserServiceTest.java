@@ -34,12 +34,12 @@ public class UserServiceTest {
         GENERIC_EMPLOYEE_1 = new User(1, "genericEmployee1", "genericPassword", Role.EMPLOYEE);
     }
 
-    @Test
+    /*@Test
     public void testGetByUsernamePassesWhenUsernameExists() {
         when(userDAO.getByUsername(anyString())).thenReturn(Optional.of(GENERIC_EMPLOYEE_1));
 
         assertEquals(Optional.of(GENERIC_EMPLOYEE_1), userDAO.getByUsername(GENERIC_EMPLOYEE_1.getUsername()));
 
         verify(userDAO).getByUsername(GENERIC_EMPLOYEE_1.getUsername());
-    }
+    }*/
 }

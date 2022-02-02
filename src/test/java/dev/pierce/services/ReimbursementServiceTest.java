@@ -34,7 +34,7 @@ public class ReimbursementServiceTest {
         reimbursementDAO = mock(ReimbursementDAO.class);
     }
 
-    @Before
+    /*@Before
     public void setUp() throws Exception {
         GENERIC_EMPLOYEE_1 = new User(1, "genericEmployee1", "genericPassword", Role.EMPLOYEE);
         GENERIC_FINANCE_MANAGER_1 = new User(1, "genericManager1", "genericPassword", Role.FINANCE_MANAGER);
@@ -46,9 +46,9 @@ public class ReimbursementServiceTest {
 
         GENERIC_ALL_PENDING_REIMBURSEMENTS = new ArrayList<Reimbursement>();
         GENERIC_ALL_PENDING_REIMBURSEMENTS.add(GENERIC_REIMBURSEMENT_1);
-    }
+    }*/
 
-    @Test
+  /*  @Test
     public void testProcessPassesWhenUserIsFinanceManagerAndReimbursementExistsAndUpdateSuccessful() {
         when(reimbursementDAO.getById(anyInt())).thenReturn(Optional.of(GENERIC_REIMBURSEMENT_1));
         when(reimbursementDAO.update(any())).thenReturn(GENERIC_REIMBURSEMENT_2);
@@ -57,7 +57,7 @@ public class ReimbursementServiceTest {
 
         verify(reimbursementDAO).getById(REIMBURSEMENT_TO_PROCESS.getId());
         verify(reimbursementDAO).update(REIMBURSEMENT_TO_PROCESS);
-    }
+    }*/
 
     @Test
     public void testGetReimbursementByStatusPassesWhenReimbursementsAreSuccessfullyReturned() {

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee</title>
+    <style rel="stylesheet" href="styles.css"></style>
+</head>
+<body>
+    <div id="header">
+    <h1 id= SiteName>Employee Reimbursement System</h1>
+    <h2 id="Name"></h2>
+    </div>
+    <div id="mainBody">
+        <button id="viewAll">View all my requests</button>
+        <button id="submitRequest">Submit request</button>
+
+        <table id="Reimbursements"></table>
+
+        <form id="submitForm">
+            <label>Full Amount</label>
+            <input id="amount" type="number"/>
+            <br/>
+            <label>Reason</label>
+            <select id="reason" name="reason">
+                <option value="null">Choose an option...</option>
+                <option value="course">University Courses</option>
+                <option value="seminar">Seminar</option>
+                <option value="certPrep">Certification Preparation Classes</option>
+                <option value="certification">Certification</option>
+                <option value="techTraining">Technical Training</option>
+                <option value="other">Other</option>
+            </select>
+            <br/>
+            <input type="submit"/>
+        </form>
+    </div>
+
+    <scipt src="employee.js"></scipt>
+</body>
+</html>

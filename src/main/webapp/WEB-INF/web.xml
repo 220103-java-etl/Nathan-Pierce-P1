@@ -20,7 +20,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ReimbursementServlet</servlet-name>
-        <url-pattern>/*</url-pattern><!-- Need to change to fit functionality -->
+        <url-pattern>/reimbursement/*</url-pattern><!-- change if needed -->
     </servlet-mapping>
 
 

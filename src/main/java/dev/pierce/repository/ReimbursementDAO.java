@@ -4,10 +4,7 @@ import dev.pierce.models.Reimbursement;
 import dev.pierce.models.Status;
 import dev.pierce.util.ConnectionUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +48,7 @@ public class ReimbursementDAO implements GenericDAO<Reimbursement>{
     }
 
     public boolean amountUnderAllowed(int id, double amount){
-        String sql = "select sum(amount) from Reimbursment_Requests where user_id = ? group by user_id;";
+        String sql = "select sum(amount) from Reimbursement_Requests where user_id = ? group by user_id;";
         double sum = 0;
         try(Connection conn = connection.getConnection()){
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -100,7 +97,7 @@ public class ReimbursementDAO implements GenericDAO<Reimbursement>{
 
     public List<Reimbursement> getByStatus(Status status){
 
-        String sql = "select * from Reimbursment_Requests where status = ?";
+        String sql = "select * from Reimbursement_Requests where status = ?";
         String stringStatus = String.valueOf(status);
         List<Reimbursement> statusList = new ArrayList<>();
 
@@ -124,5 +121,28 @@ public class ReimbursementDAO implements GenericDAO<Reimbursement>{
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<Reimbursement> getAll(){
+        String sql = "select * from Reimbursement_Requests";
+        List<Reimbursement> requestList = new ArrayList<>();
+        try(Connection conn = connection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Reimbursement reimbursement = new Reimbursement(rs.getInt("request_id"),
+                        Status.valueOf(rs.getString("status")),
+                        userDAO.getById(rs.getInt("user_id")),
+                        userDAO.getByUsername(rs.getString("manager_username")),
+                        rs.getDouble("amount"),
+                        rs.getString("reason"),
+                        rs.getString("processing_reason"));
+                requestList.add(reimbursement);
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return requestList;
     }
 }

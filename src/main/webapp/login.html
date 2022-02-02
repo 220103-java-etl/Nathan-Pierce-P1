@@ -5,8 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Reimbursement System</title>
-    <style rel="stylesheet" href="styles.css"></style>
-    <script src="index.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <form action="login" method="post">
@@ -15,13 +14,15 @@
         </label><br/>
         <label>
             Username:
-            <input type="text" name="username" required/>
+            <input id="username" type="text" name="username" required/>
         </label><br/>
         <label>
             Password:
-            <input type="password" name="password" required/>
+            <input id="password" type="password" name="password" required/>
         </label><br/>
-        <input type="submit" value="Login"/>
+        <button id="loginButton" type="button" onclick="login()">Login</button>
     </form>
+
+    <script src="index.js"></script>
 </body>
 </html>

@@ -30,4 +30,10 @@ public class ReimbursementService {
         return reList;
     }
 
+    public List<Reimbursement> getAllReimbursements(){
+        List<Reimbursement> allList;
+        allList = rDAO.getAll();
+        return allList;
+    }
+
 }
