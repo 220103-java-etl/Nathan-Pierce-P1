@@ -35,6 +35,13 @@ public class ConnectionUtil {
     public static Connection getConnection() {
 
         Connection connection = null;
+
+        try {
+            Class.forName(dbProps.getProperty("driver"));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
         String url = dbProps.getProperty("url");
         String username = dbProps.getProperty("username");
         String password = dbProps.getProperty("password");
@@ -47,5 +54,21 @@ public class ConnectionUtil {
 
         return connection;
     }
+
+//    public static void main(String[] args) {
+//
+//        Connection connection = getConnectionUtil().getConnection();
+//        try {
+//            if (connection != null) {
+//                System.out.println("Connection Successful");
+//                connection.close();
+//            }
+//            else {
+//                System.out.println("Something went wrong..");
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

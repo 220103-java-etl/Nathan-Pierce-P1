@@ -1,5 +1,5 @@
 function login(){
-    let url = "../login";
+    let url = "http://localhost:8080/Project-1/login";
 
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
@@ -31,10 +31,10 @@ function login(){
             localStorage.setItem("userName", rJson.fullName);
 
             if(rJson.role == Employee){
-                window.location.href="../employee.html";
+                window.location.href="/Project-1/employee.html";
             }
             else{
-                window.location.href="../manager.html";
+                window.location.href="/Project-1/manager.html";
             }
         }
         else if(xhr.readyState == 4 && xhr.status == 418){

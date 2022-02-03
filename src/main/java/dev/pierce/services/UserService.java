@@ -7,21 +7,15 @@ public class UserService {
 
     private UserDAO userDAO = new UserDAO();
 
-    public boolean login(String username, String password){
+    public User login(String username, String password){
         User user = userDAO.getByUsername(username);
-        if (user != null){
-            if(username.equals(user.getUsername()) && password.equals(user.getPassword())){
-                return true;
-            }
-            else{
-                System.out.println("Your username or password is incorrect.");
-            }
+        if (user != null && password.equals(user.getPassword())){
+                return user;
         }
         else {
             System.out.println("The account does not exist.");
         }
-
-        return false;
+        return null;
     }
 
     public User getByLogin(User u){

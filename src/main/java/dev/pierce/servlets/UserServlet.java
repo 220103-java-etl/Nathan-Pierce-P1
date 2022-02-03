@@ -23,16 +23,16 @@ public class UserServlet extends HttpServlet {
         UserDAO userDAO = new UserDAO();
         UserService userService = new UserService();
 
-        User u = objectMapper.readValue(request.getReader(), User.class);
-        u = userService.getByLogin(u);
-        String username = u.getUsername();
-        String password = u.getPassword();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
-        if(userService.login(username, password)){
-            //allow login
-            response.setStatus(200);
+        User u = userService.login(username, password);
+
+
+       if (u != null){
+
             //redirect based on role
-            if(userDAO.getByUsername(username).getRole().equals(Role.FINANCE_MANAGER)){
+            if(u.getRole().equals(Role.FINANCE_MANAGER)){
                 response.sendRedirect("manager.html");
             }
             else{
@@ -40,10 +40,8 @@ public class UserServlet extends HttpServlet {
             }
         }
         else{
-            response.setStatus(418);
+            response.setStatus(401);
         }
-
-        response.getWriter().write(objectMapper.writeValueAsString(u));
 
     }
 

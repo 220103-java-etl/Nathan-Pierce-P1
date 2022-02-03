@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 
 public class UserDAO implements GenericDAO <User>{
 
@@ -16,7 +17,7 @@ public class UserDAO implements GenericDAO <User>{
 
     @Override
     public User getByUsername(String username){
-        String sql = "select * from Users where username = ?";
+        String sql = "select * from users where username = ?";
 
         try(Connection conn = connection.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -27,7 +28,7 @@ public class UserDAO implements GenericDAO <User>{
                         rs.getString("users_full_name"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        Role.valueOf(rs.getString("role")));
+                        Role.valueOf(rs.getString("role").toUpperCase()));
                 return user;
             }
         } catch (SQLException e) {
