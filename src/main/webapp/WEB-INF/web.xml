@@ -14,6 +14,10 @@
         <servlet-name>ReimbursementServlet</servlet-name>
         <servlet-class>dev.pierce.servlets.ReimbursementServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReimbursementTable</servlet-name>
+        <servlet-class>ReimbursementTableServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
@@ -21,7 +25,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ReimbursementServlet</servlet-name>
-        <url-pattern>/reimbursement/*</url-pattern><!-- change if needed -->
+        <url-pattern>/reimbursement</url-pattern><!-- change if needed -->
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReimbursementTable</servlet-name>
+        <url-pattern>/reimtable</url-pattern>
     </servlet-mapping>
 
 </web-app>

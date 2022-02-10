@@ -1,6 +1,7 @@
 #header{
     background-color: blue;
     color: rgb(201, 226, 235);
+    margin: 0;
 }
 
 #SiteName{
@@ -19,4 +20,6 @@
 
 body {
     background-color: #03bafc;
+    text-align: center;
+    color: white;
 }

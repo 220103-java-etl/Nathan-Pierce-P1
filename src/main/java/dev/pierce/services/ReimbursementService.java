@@ -13,8 +13,8 @@ public class ReimbursementService {
     //Submit
     //Should take user id, requested amount, and the date to make a reimbursement request
     //call rDAO.submitRequest()
-    public void submitRequest(int id, double amount, String reason){
-        rDAO.submitRequest(id, amount, reason);
+    public Reimbursement submitRequest(Reimbursement reimbursement){
+        return rDAO.submitRequest(reimbursement);
     }
 
     //process()
@@ -36,4 +36,9 @@ public class ReimbursementService {
         return allList;
     }
 
+    public List<Reimbursement> getAllMyRequests(int id){
+        List<Reimbursement> myList;
+        myList = rDAO.getMyRequestsById(id);
+        return myList;
+    }
 }

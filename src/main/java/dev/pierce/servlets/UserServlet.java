@@ -23,22 +23,25 @@ public class UserServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
+        System.out.println(username);
+        System.out.println(password);
+
         User u = userService.login(username, password);
+        System.out.println(u);
 
+        if (u != null){
+           HttpSession session = request.getSession();
+           session.setAttribute("user", u);
 
-       if (u != null){
-           HttpSession session=request.getSession();
-           session.setAttribute("currentUser", u);
-           //redirect based on role
-            if(u.getRole().equals(Role.FINANCE_MANAGER)){
-                response.sendRedirect("manager.html");
-            }
-            else{
-                response.sendRedirect("employee.html");
-            }
+           if (u.getRole() == Role.FINANCE_MANAGER) {
+               response.sendRedirect("manager.html");
+           }
+           else{
+               response.sendRedirect("employee.html");
+           }
         }
         else{
-            response.setStatus(401);
+           response.setStatus(401);
         }
 
     }
@@ -48,7 +51,7 @@ public class UserServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         if(session != null){
-            User user = (User)  session.getAttribute("currentUser");
+            User user = (User) session.getAttribute("currentUser");
             response.getWriter().write(objectMapper.writeValueAsString(user));
         }
 

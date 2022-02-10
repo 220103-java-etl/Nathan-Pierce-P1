@@ -18,7 +18,4 @@ public class UserService {
         return null;
     }
 
-    public User getByLogin(User u){
-        return userDAO.getByUsername(u.getUsername());
-    }
 }

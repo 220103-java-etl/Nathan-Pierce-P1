@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Locale;
 
 public class UserDAO implements GenericDAO <User>{
 
@@ -34,8 +33,6 @@ public class UserDAO implements GenericDAO <User>{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
         return null;
     }
 

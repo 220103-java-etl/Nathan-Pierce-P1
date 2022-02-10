@@ -1,7 +1,9 @@
 package dev.pierce.repository;
 
 import dev.pierce.models.Reimbursement;
+import dev.pierce.models.Role;
 import dev.pierce.models.Status;
+import dev.pierce.models.User;
 import dev.pierce.util.ConnectionUtil;
 
 import java.sql.*;
@@ -23,28 +25,24 @@ public class ReimbursementDAO implements GenericDAO<Reimbursement>{
         return null;
     }
 
-    public String submitRequest(int id, double amount, String reason){
-        String reply;
-        if(amountUnderAllowed(id, amount) == true) {
+    public Reimbursement submitRequest(Reimbursement r){
+        if(amountUnderAllowed(r.getAuthor().getId(), r.getAmount()) == true) {
 
             String sql = "insert into Reimbursement_Requests (user_id, amount, reason) values( ?, ?, ? );";
 
             try (Connection conn = connection.getConnection()) {
                 PreparedStatement pstmt = conn.prepareStatement(sql);
-                pstmt.setInt(1, id);
-                pstmt.setDouble(2, amount);
-                pstmt.setString(3, reason);
+                pstmt.setInt(1, r.getAuthor().getId());
+                pstmt.setDouble(2, r.getAmount());
+                pstmt.setString(3, r.getSubmitReason());
                 pstmt.execute();
 
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            reply = "Request submitted.";
+            return r;
         }
-        else{
-            reply = "Request not allowed. Amount exceeds allowance.";
-        }
-        return reply;
+        return null;
     }
 
     public boolean amountUnderAllowed(int id, double amount){
@@ -144,5 +142,29 @@ public class ReimbursementDAO implements GenericDAO<Reimbursement>{
             e.printStackTrace();
         }
         return requestList;
+    }
+
+    public List<Reimbursement> getMyRequestsById(int id){
+        String sql = "select * from reimbursement_requests join processed_requests on reimbursement_requests.request_id = processed_requests.request_id where user_id = ? ;";
+        List<Reimbursement> myList = new ArrayList<>();
+        try(Connection conn = connection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()){
+                Reimbursement r = new Reimbursement(rs.getInt("request_id"),
+                        Status.valueOf(rs.getString("status")),
+                        userDAO.getById(rs.getInt("user_id")),
+                        userDAO.getById(rs.getInt("processing_manager_id")),
+                        rs.getDouble("amount"),
+                        rs.getString("reason"),
+                        rs.getString("processing_reason"));
+                myList.add(r);
+            }
+            return myList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

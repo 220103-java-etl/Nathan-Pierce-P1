@@ -3,6 +3,7 @@ package dev.pierce.servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.pierce.models.Status;
 import dev.pierce.models.Reimbursement;
+import dev.pierce.models.User;
 import dev.pierce.services.ReimbursementService;
 
 import javax.servlet.ServletConfig;
@@ -10,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -23,15 +25,34 @@ public class ReimbursementServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //submit requests
 
-        Reimbursement r = objectMapper.readValue(request.getReader(), Reimbursement.class);
-        rServ.submitRequest(r.getId(), r.getAmount(), r.getSubmitReason());
+//        double amount = Double.valueOf(request.getParameter("amount"));
+        double amount = Double.parseDouble(request.getParameter("amount"));
+        String reason = request.getParameter("reason");
+        System.out.println(amount);
+
+        HttpSession session = request.getSession(false);
+
+        User user = (User) session.getAttribute("user");
+        Reimbursement r = new Reimbursement();
+        r.setAuthor(user);
+        r.setAmount(amount);
+        r.setSubmitReason(reason);
+
+        r = rServ.submitRequest(r);
+
+        if( r != null){
+            response.setStatus(200);
+            response.sendRedirect("employee.html");
+        }
+        else {
+            response.setStatus(401);
+        }
 
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //getting requests
-        Reimbursement r = objectMapper.readValue(request.getReader(), Reimbursement.class);
+        //getting all requests
 
         List<Reimbursement> reimbursementList = rServ.getAllReimbursements();
 
