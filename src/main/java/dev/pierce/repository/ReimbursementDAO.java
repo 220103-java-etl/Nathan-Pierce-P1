@@ -40,6 +40,33 @@ public class ReimbursementDAO implements GenericDAO<Reimbursement>{
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            String sql2 = "select request_id from Reimbursement_Requests where request_id = (select max(request_id) from Reimbursement_Requests where user_id = ?);";
+            try(Connection conn = connection.getConnection()){
+                PreparedStatement pstmt = conn.prepareStatement(sql2);
+                pstmt.setInt(1, r.getAuthor().getId());
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()){
+                    r.setId(rs.getInt("request_id"));
+                    System.out.println(r.getId());
+                }
+            }catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (r.getId() == 0) {
+                return null;
+            }
+            else{
+                System.out.println("entered else");
+                String sql3 = "insert into Processed_Requests (request_id) values (?);";
+                try (Connection conn = connection.getConnection()) {
+                    PreparedStatement pstmt = conn.prepareStatement(sql3);
+                    pstmt.setInt(1, r.getId());
+                    pstmt.execute();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
             return r;
         }
         return null;
@@ -68,12 +95,12 @@ public class ReimbursementDAO implements GenericDAO<Reimbursement>{
     public Reimbursement processRequest(Reimbursement reimbursement){
 
         //insert into Processed_Requests
-        String insertSql="insert into Processed_Requests (request_id, processing_manager, processing_reason) values ( ?, ?, ? )";
+        String insertSql="update Processed_Requests ( processing_manager, processing_reason) values ( ?, ? ) where request_id = ?;";
         try(Connection conn = connection.getConnection()){
             PreparedStatement pstmt = conn.prepareStatement(insertSql);
-            pstmt.setInt(1, reimbursement.getId());
-            pstmt.setInt(2, reimbursement.getResolver().getId());
-            pstmt.setString(3, reimbursement.getProcessReason());
+            pstmt.setInt(1, reimbursement.getResolver().getId());
+            pstmt.setString(2, reimbursement.getProcessReason());
+            pstmt.setInt(3, reimbursement.getId());
             pstmt.execute();
         }
         catch(SQLException e){
@@ -81,7 +108,7 @@ public class ReimbursementDAO implements GenericDAO<Reimbursement>{
         }
 
         //update Reimbursement_Requests status
-        String updateSql="update Reimbursement_Requests set status = '?' where request_id = ?";
+        String updateSql="update Reimbursement_Requests set status = ? where request_id = ?;";
         try(Connection conn = connection.getConnection()){
             PreparedStatement pstmt = conn.prepareStatement(updateSql);
             pstmt.setString(1, String.valueOf(reimbursement.getStatus()));
