@@ -20,8 +20,8 @@ public class ReimbursementService {
     //process()
     //Should allow user with Finance manager role to approve or deny request
     //call rDAO.processRequest() with status param
-    public void processRequest(int requestId, int id, String reason, String status ){
-        rDAO.processRequest(requestId, id, reason, status);
+    public Reimbursement processRequest(Reimbursement reimbursement ){
+        return rDAO.processRequest(reimbursement);
     }
 
     public List<Reimbursement> getReimbursementsByStatus(Status status){

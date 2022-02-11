@@ -65,34 +65,37 @@ public class ReimbursementDAO implements GenericDAO<Reimbursement>{
         return false;
     }
 
-    public void processRequest(int requestId, int id, String processReason, String status){
+    public Reimbursement processRequest(Reimbursement reimbursement){
 
         //insert into Processed_Requests
         String insertSql="insert into Processed_Requests (request_id, processing_manager, processing_reason) values ( ?, ?, ? )";
         try(Connection conn = connection.getConnection()){
             PreparedStatement pstmt = conn.prepareStatement(insertSql);
-            pstmt.setInt(1, requestId);
-            pstmt.setInt(2, id);
-            pstmt.setString(3, processReason);
+            pstmt.setInt(1, reimbursement.getId());
+            pstmt.setInt(2, reimbursement.getResolver().getId());
+            pstmt.setString(3, reimbursement.getProcessReason());
             pstmt.execute();
         }
         catch(SQLException e){
             e.printStackTrace();
         }
 
-        //update Reimbursment_Requests status
-        String updateSql="update Reimbursment_Requests set status = '?' where request_id = ?";
+        //update Reimbursement_Requests status
+        String updateSql="update Reimbursement_Requests set status = '?' where request_id = ?";
         try(Connection conn = connection.getConnection()){
             PreparedStatement pstmt = conn.prepareStatement(updateSql);
-            pstmt.setString(1, status);
-            pstmt.setInt(2, id);
+            pstmt.setString(1, String.valueOf(reimbursement.getStatus()));
+            pstmt.setInt(2, reimbursement.getId());
             pstmt.execute();
         }
         catch(SQLException e){
             e.printStackTrace();
         }
+
+        return reimbursement;
     }
 
+    //not used in servlet
     public List<Reimbursement> getByStatus(Status status){
 
         String sql = "select * from Reimbursement_Requests where status = ?";

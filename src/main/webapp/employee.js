@@ -83,7 +83,7 @@ function populateTable(rjson){
         tr.append(tdAmount);
 
         let tdReason = document.createElement("td");
-        tdReason.innerHTML = reimbursement.reason;
+        tdReason.innerHTML = reimbursement.submitReason;
         tr.append(tdReason);
 
         let tdStatus = document.createElement("td");
@@ -94,12 +94,14 @@ function populateTable(rjson){
         tdFManager.id = reimbursement.manager.id;
         tdFManager.innerHTML = `${reimbursement.resolver.fullName}`;
         tr.append(tdFManager);
-        
-        bookTable.append(tr);
+
+        let tdProReason = document.createElement("td");
+        tdProReason.innerHTML = reimbursement.processReason;
+        tr.append(tdProReason);
+
+        reimTable.append(tr);
     }
 
-    bookDiv.append(bookTable);
+    reimDiv.append(reimTable);
 
 }
-
-

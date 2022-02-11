@@ -25,10 +25,13 @@ public class ReimbursementTableServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         User user = (User) session.getAttribute("user");
+        System.out.println(user);
         List<Reimbursement> reqList = rServ.getAllMyRequests(user.getId());
         String json = objectMapper.writeValueAsString(reqList);
+        System.out.println(json);
 
         if (reqList != null){
+            System.out.println("passed if statement");
             response.getWriter().write(json);
         }
         else{
