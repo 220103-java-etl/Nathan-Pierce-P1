@@ -20,5 +20,3 @@ List of features
 List of ToDos
 - Finance Manager request processing
 - Employee viewing of their requests
-
-## Getting Started
